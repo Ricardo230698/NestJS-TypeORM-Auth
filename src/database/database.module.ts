@@ -86,8 +86,8 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
         });
         // The following is for testing purposes
-        const test = await connection.execute('SELECT * FROM brand');
-        console.log(test);
+        // const test = await connection.execute('SELECT * FROM brand');
+        // console.log(test);
         return connection;
       },
       inject: [config.KEY],
