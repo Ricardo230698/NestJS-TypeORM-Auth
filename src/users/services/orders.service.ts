@@ -20,7 +20,7 @@ export class OrdersService {
   async findOne(id: number) {
     const order = await this.orderRepo.findOne({
       where: { id },
-      relations: ['items', 'items.product'],
+      relations: ['items', 'items.product'], // el 'items.product' nos permite ir mas allá de la relación. Es decir, solo con 'items' podemos traer también la relación con los items de esta entidad. Sin embargo, esa entidad 'items' también tiene una relación dentro de sí que se llama 'product'. Por lo tanto, 'items.product' nos permite ir más allá de la relación para así poder traer detalles más específicos
     });
     if (!order) {
       throw new NotFoundException('not found');
