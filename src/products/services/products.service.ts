@@ -25,6 +25,22 @@ export class ProductsService {
     });
   }
 
+  // Adicionalmente, trabajando con el findAll, si queremos trabajar con paginación, podemos construir nuestro propio DTO, al cual le podemos pasar propiedades como offset, limit, etc.
+  // Si decidimos trabajar con paginación, le pasamos aquel DTO como parametro.
+  // findAll(params: FilterProductsDto) {
+  //   if(params) {
+  //     const { limit, offset } = params; // Usamos destructuración para sacar los valores de los parámetros.
+  //     return this.productRepo.find({
+  //       relations: ['brand'],
+  //       take: limit, // TypeORM nos ayuda a trabajar con paginación y nos da la oportunidad de pasarle estas propiedades en el metodo find (take & skip)
+  //       skip: offset,
+  //     });  
+  //   }
+  //   return this.productRepo.find({
+  //     relations: ['brand'],
+  //   });
+  // }
+
   async findOne(id: number) {
     const product = await this.productRepo.findOne({
       where: { id },

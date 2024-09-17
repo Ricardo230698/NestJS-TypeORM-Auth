@@ -34,6 +34,13 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
+  // Adicionalmente, trabajando con el findAll, si queremos trabajar con paginación, podemos construir nuestro propio DTO, al cual le podemos pasar propiedades como offset, limit, etc:
+  // @Get()
+  // @ApiOperation({ summary: 'List of products' })
+  // getProducts(@Query() params: FilterProductsDto) {
+  //   return this.productsService.findAll(params);
+  // }
+
   @Get('filter')
   getProductFilter() {
     return `yo soy un filter`;

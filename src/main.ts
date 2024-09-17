@@ -9,6 +9,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      // Declaramos lo siguiente (transformOptions), específicamente para que cuando se pasen como parametros muchas cosas (usando @Query), nuestro ParseIntPipe transforme implicitamente aquellos parametros a los valores esperados
       transformOptions: {
         enableImplicitConversion: true,
       },
