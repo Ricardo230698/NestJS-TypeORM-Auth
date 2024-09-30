@@ -64,7 +64,7 @@ export class FilterProductsDto { // Este DTO lo podemos usar cuando queremos tra
   @IsPositive()
   minPrice: number;
 
-  @ValidateIf((item) => item.minPrice)
+  @ValidateIf((item) => item.minPrice) // Este es un decorador de TypeORM que nos indica que cuando minPrice está declarado, maxPrice debe ser obligatorio
   @IsPositive()
   maxPrice: number;
 }

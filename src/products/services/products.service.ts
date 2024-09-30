@@ -27,19 +27,25 @@ export class ProductsService {
 
   // Adicionalmente, trabajando con el findAll, si queremos trabajar con paginación, podemos construir nuestro propio DTO, al cual le podemos pasar propiedades como offset, limit, etc.
   // Si decidimos trabajar con paginación, le pasamos aquel DTO como parametro.
-  // findAll(params: FilterProductsDto) {
-  //   if(params) {
-  //     const { limit, offset } = params; // Usamos destructuración para sacar los valores de los parámetros.
-  //     return this.productRepo.find({
-  //       relations: ['brand'],
-  //       take: limit, // TypeORM nos ayuda a trabajar con paginación y nos da la oportunidad de pasarle estas propiedades en el metodo find (take & skip)
-  //       skip: offset,
-  //     });  
-  //   }
-  //   return this.productRepo.find({
-  //     relations: ['brand'],
-  //   });
-  // }
+  findAlll(params: FilterProductsDto) {
+    if(params) {
+      const where: FindOptionsWhere<Product> = {} // En este caso, gracias a FindOptionsWhere, podemos filtrar con where de acuerdo a las propiedades de alguna entidad específica. En este caso, lo haremos con una de las propiedades de Product: 'price'. Por cierto, declarar 'where' con FindOptionsWhere como tipo (tipado), es considerado una buena practica
+      const { limit, offset } = params; // Usamos destructuración para sacar los valores de los parámetros
+      const { maxPrice, minPrice } = params;
+      if(minPrice && maxPrice) {
+        where.price = Between(minPrice, maxPrice); // Al principio, arriba, declaramos 'where' vacío. Pero lo podemos ir editando dinámicamente, como aqui, si los parametros minPrice y maxPrice existen
+      }
+      return this.productRepo.find({
+        relations: ['brand'],
+        where, // Este where puede ser dinámico. Si, por ejemplo, queremos filtrar por otras opciones, lo usamos en conjunto con FindOptionsWhere, otra de las bondades de TypeORM
+        take: limit, // TypeORM nos ayuda a trabajar con paginación y nos da la oportunidad de pasarle estas propiedades en el metodo find (take & skip)
+        skip: offset,
+      });  
+    }
+    return this.productRepo.find({
+      relations: ['brand'],
+    });
+  }
 
   async findOne(id: number) {
     const product = await this.productRepo.findOne({
