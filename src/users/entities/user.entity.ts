@@ -31,6 +31,6 @@ export class User {
   updateAt: Date;
 
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn({ name: 'customer_id' })
+  @JoinColumn({ name: 'customer_id' }) // Modificando el naming. Aqui la buena practica para trabajar con bases de datos es pasarle la propiedad 'name' y darle el nombre correcto al campo customer. En este caso, el nombre correcto o la buena practica sería darle un underscore y luego la palabra 'id'
   customer: Customer;
 }
