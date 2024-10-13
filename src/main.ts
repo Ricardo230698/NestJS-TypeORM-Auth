@@ -1,5 +1,5 @@
 import { NestFactory, Reflector } from '@nestjs/core';
-import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
+import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common'; // 'ClassSerializerInterceptor' es un interceptor que nos permite hacer serializaciones en nuestra aplicacion. Lo podemos aplicar globalmente en nuestra aplicacion con 'app.useGlobalInterceptors', como abajo.
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
@@ -15,7 +15,7 @@ async function bootstrap() {
       },
     }),
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // Con esta linea activamos que podamos usar la tecnica de serializacion en cualquier parte de nuestra aplicacion
 
   const config = new DocumentBuilder()
     .setTitle('API')
