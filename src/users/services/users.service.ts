@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 // import { Client } from 'pg';
+import * as bcrypt from 'bcrypt';
 
 import { User } from '../entities/user.entity';
 import { Order } from '../entities/order.entity';
@@ -38,8 +39,17 @@ export class UsersService {
     return user;
   }
 
+  async findByEmail(email: string) {
+    return this.userRepo.findOne({
+      where: { email }
+    })
+  }
+
   async create(data: CreateUserDto) {
     const newUser = this.userRepo.create(data);
+    const hashPassword = await bcrypt.hash(newUser.password, 10); // 10: Representa el número de "rondas de salting" (salt rounds) que bcrypt usará para encriptar la contraseña. Cada ronda añade un nivel de complejidad al hash, haciéndolo más seguro. Un número mayor de rondas significa más seguridad, pero también un proceso más lento.
+    newUser.password = hashPassword;
+
     if (data.customerId) {
       const customer = await this.customersService.findOne(data.customerId);
       newUser.customer = customer;
