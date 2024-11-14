@@ -29,5 +29,6 @@ export default registerAs('config', () => { // La clave 'config' que defines en 
       host: process.env.MYSQL_HOST,
     },
     apiKey: process.env.API_KEY,
+    jwtSecret: process.env.JWT_SECTET,
   };
 });
