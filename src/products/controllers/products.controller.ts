@@ -10,6 +10,7 @@ import {
   HttpStatus,
   HttpCode,
   Res,
+  UseGuards,
   // ParseIntPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -22,12 +23,17 @@ import {
   FilterProductsDto,
 } from '../dtos/products.dtos';
 import { ProductsService } from './../services/products.service';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'List of products' })
   getProducts() {
@@ -46,6 +52,7 @@ export class ProductsController {
     return `yo soy un filter`;
   }
 
+  @Public()
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
   getOne(@Param('productId', ParseIntPipe) productId: number) {
