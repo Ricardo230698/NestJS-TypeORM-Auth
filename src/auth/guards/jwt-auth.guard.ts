@@ -5,20 +5,21 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') { // Esta línea significa que JwtAuthGuard hereda de AuthGuard con la estrategia 'jwt' que ya definiste en JwtStrategy. --- Al usar AuthGuard('jwt'), le indicas a NestJS que este guard debe utilizar JwtStrategy para validar los tokens JWT en las solicitudes.
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  // Esta línea significa que JwtAuthGuard hereda de AuthGuard con la estrategia 'jwt' que ya definiste en JwtStrategy. --- Al usar AuthGuard('jwt'), le indicas a NestJS que este guard debe utilizar JwtStrategy para validar los tokens JWT en las solicitudes.
   constructor(private reflector: Reflector) {
     super();
   }
 
-  canActivate(context: ExecutionContext) { // canActivate es el método principal de un guard. Este determina si una solicitud puede proceder o no. --- En esta implementación, sobrescribes canActivate para añadir una funcionalidad adicional: permitir acceso a las rutas públicas.
+  canActivate(context: ExecutionContext) {
+    // canActivate es el método principal de un guard. Este determina si una solicitud puede proceder o no. --- En esta implementación, sobrescribes canActivate para añadir una funcionalidad adicional: permitir acceso a las rutas públicas.
     const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
-    if(isPublic) {
+    if (isPublic) {
       return true; // Si la ruta es pública, permite el acceso sin requerir un token JWT.
     }
     return super.canActivate(context); // Si la ruta no es pública, delega la validación al guard base (AuthGuard('jwt')), que usa JwtStrategy para verificar el token. --- Al sobrescribir canActivate, habilitas la funcionalidad adicional para manejar rutas públicas de manera flexible.
   }
 }
-
 
 // ---------
 // Pregunta: Como es que super tiene un metodo 'canActivate'? Y por qué se le pasa 'context' como parametro?
@@ -43,7 +44,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') { // Esta línea significa qu
 
 // JwtAuthGuard recibe el context en su método sobrescrito canActivate.
 // Pasa ese mismo contexto al método canActivate de la clase base (AuthGuard) para que pueda acceder a la solicitud y llamar a la estrategia 'jwt'.
-
 
 // ¡Buena pregunta! Vamos a desglosarlo para que quede claro.
 
@@ -115,7 +115,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') { // Esta línea significa qu
 
 // // Uso
 // const child = new ChildClass();
-// console.log(child.canActivate('RequestContext')); 
+// console.log(child.canActivate('RequestContext'));
 
 // Conclusión:
 // super.canActivate(context) llama al método canActivate de la clase base AuthGuard.

@@ -23,7 +23,13 @@ import { ProfileController } from './controllers/profile.controller';
     ProductsModule,
     TypeOrmModule.forFeature([User, Customer, Order, OrderItem]),
   ],
-  controllers: [CustomerController, UsersController, OrdersController, OrderItemController, ProfileController],
+  controllers: [
+    CustomerController,
+    UsersController,
+    OrdersController,
+    OrderItemController,
+    ProfileController,
+  ],
   providers: [CustomersService, UsersService, OrdersService, OrderItemService],
   exports: [UsersService],
 })

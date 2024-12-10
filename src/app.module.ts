@@ -48,7 +48,6 @@ import { AuthModule } from './auth/auth.module';
 })
 export class AppModule {}
 
-
 // ---
 // -- Pregunta: ¿Cómo funciona esta línea?
 // Explicación paso a paso:

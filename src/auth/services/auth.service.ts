@@ -14,33 +14,33 @@ import { PayloadToken } from '../models/token.model';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService, // El JwtService es una herramienta que facilita la creación de tokens JWT, pero no define cómo se deben usar esos tokens en las rutas protegidas. Para ello, normalmente se crea una estrategia JWT aparte (como JwtStrategy) que verifique automáticamente los tokens en ciertas rutas.
-    ) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService, // El JwtService es una herramienta que facilita la creación de tokens JWT, pero no define cómo se deben usar esos tokens en las rutas protegidas. Para ello, normalmente se crea una estrategia JWT aparte (como JwtStrategy) que verifique automáticamente los tokens en ciertas rutas.
+  ) {}
 
-    async validateUser(email: string, password: string) {
-        const user = await this.usersService.findByEmail(email);
-        
-        if(user) {
-            const isMatch = await bcrypt.compare(password, user.password); // Esta línea utiliza la función bcrypt.compare para verificar si la contraseña ingresada por el usuario coincide con la contraseña almacenada en la base de datos.
-            if(isMatch) {
-                return user;
-            }
-        }
+  async validateUser(email: string, password: string) {
+    const user = await this.usersService.findByEmail(email);
 
-        return null;
+    if (user) {
+      const isMatch = await bcrypt.compare(password, user.password); // Esta línea utiliza la función bcrypt.compare para verificar si la contraseña ingresada por el usuario coincide con la contraseña almacenada en la base de datos.
+      if (isMatch) {
+        return user;
+      }
     }
 
-    generateJWT(user: User) { // Pregunta: Pero cuando se ejecutará este metodo? Será algo automatico despues de que se valide el usuario en validateUser? Si es así, que hace que sea automático? -- Respuesta al final...
-        const payload: PayloadToken = { role: user.role, sub: user.id }; // Objetivo: Se crea el payload para el token JWT. -- role: user.role: Aquí se incluye el rol del usuario en el payload, lo cual puede ser útil para identificar permisos o niveles de acceso en el sistema. -- sub: user.id: sub (abreviatura de "subject") es una convención que indica el ID principal del usuario autenticado. Este campo puede ser utilizado posteriormente para identificar al usuario de manera única.
-        return {
-            access_token: this.jwtService.sign(payload), // Objetivo: Genera el token JWT firmado. -- Función this.jwtService.sign(payload): Esta función usa la clase JwtService para crear un token. -- Firma del token: sign(payload) firma el payload utilizando una clave secreta definida en el módulo de configuración. Esto asegura que el token es seguro y no puede ser alterado por terceros.
-            user,
-        }
-    }
+    return null;
+  }
+
+  generateJWT(user: User) {
+    // Pregunta: Pero cuando se ejecutará este metodo? Será algo automatico despues de que se valide el usuario en validateUser? Si es así, que hace que sea automático? -- Respuesta al final...
+    const payload: PayloadToken = { role: user.role, sub: user.id }; // Objetivo: Se crea el payload para el token JWT. -- role: user.role: Aquí se incluye el rol del usuario en el payload, lo cual puede ser útil para identificar permisos o niveles de acceso en el sistema. -- sub: user.id: sub (abreviatura de "subject") es una convención que indica el ID principal del usuario autenticado. Este campo puede ser utilizado posteriormente para identificar al usuario de manera única.
+    return {
+      access_token: this.jwtService.sign(payload), // Objetivo: Genera el token JWT firmado. -- Función this.jwtService.sign(payload): Esta función usa la clase JwtService para crear un token. -- Firma del token: sign(payload) firma el payload utilizando una clave secreta definida en el módulo de configuración. Esto asegura que el token es seguro y no puede ser alterado por terceros.
+      user,
+    };
+  }
 }
-
 
 // ----
 // Pregunta: Pero cuando se ejecutará este metodo? Será algo automatico despues de que se valide el usuario en validateUser? Si es así, que hace que sea automático?
@@ -73,4 +73,3 @@ export class AuthService {
 // Por lo tanto, generateJWT no se ejecuta automáticamente; es llamado de forma explícita en el punto del flujo donde desees generar y enviar el token JWT al cliente.
 
 // ----
-

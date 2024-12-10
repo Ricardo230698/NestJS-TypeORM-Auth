@@ -5,7 +5,7 @@ import { UsersModule } from 'src/users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './controllers/auth.controller';
 
-import config from '../config'
+import config from '../config';
 import { ConfigType } from '@nestjs/config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategry } from './strategies/jwt.strategy';
@@ -14,17 +14,19 @@ import { JwtStrategry } from './strategies/jwt.strategy';
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.registerAsync({ // Esto registra el módulo de JWT de forma asíncrona. Permite cargar configuraciones dinámicas o dependientes de otros servicios.
+    JwtModule.registerAsync({
+      // Esto registra el módulo de JWT de forma asíncrona. Permite cargar configuraciones dinámicas o dependientes de otros servicios.
       inject: [config.KEY], // inject: [config.KEY]: Utiliza inyección de dependencias para pasar servicios o configuraciones que la función de useFactory usará. En este caso, config.KEY corresponde al servicio de configuración (definido en tu archivo config), lo que permite acceder a las variables de ambiente a través de configService.
-      useFactory: (configService: ConfigType<typeof config>) => { // useFactory: useFactory es una función que proporciona la configuración que necesita JwtModule. En lugar de una configuración estática, useFactory permite ejecutar lógica para construir esta configuración (como acceder a variables de ambiente). --- (configService: ConfigType<typeof config>) => { ... }: Esta es la función useFactory, que recibe configService como parámetro (gracias a inject). Aquí es donde se construye la configuración para el JWT.
+      useFactory: (configService: ConfigType<typeof config>) => {
+        // useFactory: useFactory es una función que proporciona la configuración que necesita JwtModule. En lugar de una configuración estática, useFactory permite ejecutar lógica para construir esta configuración (como acceder a variables de ambiente). --- (configService: ConfigType<typeof config>) => { ... }: Esta es la función useFactory, que recibe configService como parámetro (gracias a inject). Aquí es donde se construye la configuración para el JWT.
         return {
           secret: configService.jwtSecret, // secret: configService.jwtSecret: Define la clave secreta para firmar el JWT. Aquí, la clave se obtiene de configService para que sea configurable a través de las variables de entorno.
           signOptions: {
-            expiresIn: '10d' // signOptions: { expiresIn: '10d' }: Define las opciones de firma del JWT. Aquí, se establece que los tokens generados expiren en 10 días.
-          }
-        }
-      }
-    })
+            expiresIn: '10d', // signOptions: { expiresIn: '10d' }: Define las opciones de firma del JWT. Aquí, se establece que los tokens generados expiren en 10 días.
+          },
+        };
+      },
+    }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategry],
   controllers: [AuthController],

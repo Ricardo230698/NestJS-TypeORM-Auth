@@ -41,8 +41,8 @@ export class UsersService {
 
   async findByEmail(email: string) {
     return this.userRepo.findOne({
-      where: { email }
-    })
+      where: { email },
+    });
   }
 
   async create(data: CreateUserDto) {

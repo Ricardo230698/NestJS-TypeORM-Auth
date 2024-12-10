@@ -16,17 +16,17 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { Request } from 'express';
 
 @Injectable()
-export class ApiKeyGuard implements CanActivate { // canActivate es un método en los guards de NestJS que se utiliza para determinar si una solicitud tiene permiso para acceder a una ruta específica. Si devuelve true, permite el acceso; si devuelve false o lanza una excepción, deniega el acceso.
+export class ApiKeyGuard implements CanActivate {
+  // canActivate es un método en los guards de NestJS que se utiliza para determinar si una solicitud tiene permiso para acceder a una ruta específica. Si devuelve true, permite el acceso; si devuelve false o lanza una excepción, deniega el acceso.
 
   constructor(
     private reflector: Reflector,
-    @Inject(config.KEY) private configService: ConfigType<typeof config>
+    @Inject(config.KEY) private configService: ConfigType<typeof config>,
   ) {}
 
   canActivate(
     context: ExecutionContext, // La línea context: ExecutionContext se refiere al contexto de ejecución en el que se encuentra la solicitud entrante. En NestJS, el ExecutionContext proporciona acceso a detalles específicos de la ejecución, como el tipo de solicitud (HTTP, WebSocket, etc.), y te permite obtener información sobre la petición, como en este caso donde se usa para acceder al objeto Request. Es útil para aplicar lógicas de autorización o validación en diferentes tipos de controladores.
   ): boolean | Promise<boolean> | Observable<boolean> {
-
     const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler()); // Esta linea verifica si el método o ruta tiene el metadata 'isPublic' asignado, lo que indicaría que la ruta es pública y no requiere autenticación. Usa el Reflector para leer ese metadata del controlador o método correspondiente.
     if (isPublic) {
       return true;

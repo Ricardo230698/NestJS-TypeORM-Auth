@@ -7,14 +7,15 @@ import { User } from 'src/users/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) {}
-    
-    @UseGuards(AuthGuard('local'))
-    @Post('login')
-    login(@Req() req: Request) { // En el código de NestJS, @Req() req: Request inyecta el objeto de solicitud HTTP (req) en el método del controlador. Esto permite acceder a todos los datos de la solicitud, incluyendo la información del usuario autenticado.
-        const user = req.user as User;
-        return this.authService.generateJWT(user); // El método validate de LocalStrategy: Si encuentra al usuario y las credenciales son correctas, devuelve el usuario. Passport toma el valor devuelto por validate y lo asigna a req.user.
-    }
+  constructor(private authService: AuthService) {}
+
+  @UseGuards(AuthGuard('local'))
+  @Post('login')
+  login(@Req() req: Request) {
+    // En el código de NestJS, @Req() req: Request inyecta el objeto de solicitud HTTP (req) en el método del controlador. Esto permite acceder a todos los datos de la solicitud, incluyendo la información del usuario autenticado.
+    const user = req.user as User;
+    return this.authService.generateJWT(user); // El método validate de LocalStrategy: Si encuentra al usuario y las credenciales son correctas, devuelve el usuario. Passport toma el valor devuelto por validate y lo asigna a req.user.
+  }
 }
 
 // Explicación de req.user

@@ -51,7 +51,8 @@ export class CreateProductDto {
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
 
-export class FilterProductsDto { // Este DTO lo podemos usar cuando queremos trabajar con paginación
+export class FilterProductsDto {
+  // Este DTO lo podemos usar cuando queremos trabajar con paginación
   @IsOptional()
   @IsPositive()
   limit: number;

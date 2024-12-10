@@ -8,7 +8,8 @@
 
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('config', () => { // La clave 'config' que defines en registerAs('config', ...) es la que NestJS usará para identificar este conjunto de configuraciones. Por lo tanto: Si cambias 'config' a otro nombre, como 'mySettings', entonces tendrás que usar @Inject(mySettings.KEY) en lugar de @Inject(config.KEY). El nombre del archivo (config.ts, settings.ts, etc.) no afecta el token de inyección; lo que importa es el nombre que definas dentro de registerAs.
+export default registerAs('config', () => {
+  // La clave 'config' que defines en registerAs('config', ...) es la que NestJS usará para identificar este conjunto de configuraciones. Por lo tanto: Si cambias 'config' a otro nombre, como 'mySettings', entonces tendrás que usar @Inject(mySettings.KEY) en lugar de @Inject(config.KEY). El nombre del archivo (config.ts, settings.ts, etc.) no afecta el token de inyección; lo que importa es el nombre que definas dentro de registerAs.
   return {
     database: {
       name: process.env.DATABASE_NAME,

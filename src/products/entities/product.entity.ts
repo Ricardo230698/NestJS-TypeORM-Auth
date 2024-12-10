@@ -38,13 +38,13 @@ export class Product {
 
   @CreateDateColumn({
     name: 'create_at', // Modificando el naming, esto es una buena practica. Cuando trabajamos con bases de datos, no es bueno usar caracteres en los nombres de las tablas/columnas. En este caso, createAt no sigue aquella buena practica porque tiene una mayuscula y las mayusculas son consideradas como un caracter especial por TypeORM o las bases de datos. Por lo tanto, debemos cambiar aquello. TypeORM nos da la oportunidad de hacerlo sin necesidad de cambiar directamente aqui el nombre. Podemos hacerlo con la propiedad 'name' dentro del decorador 'CreateDateColumn'
-    type: 'timestamp'
+    type: 'timestamp',
   })
   createAt: Date;
 
   @UpdateDateColumn({
     name: 'update_at', // // Modificando el naming, esto es una buena practica. Cuando trabajamos con bases de datos, no es bueno usar caracteres en los nombres de las tablas/columnas. En este caso, createAt no sigue aquella buena practica porque tiene una mayuscula y las mayusculas son consideradas como un caracter especial por TypeORM o las bases de datos. Por lo tanto, debemos cambiar aquello. TypeORM nos da la oportunidad de hacerlo sin necesidad de cambiar directamente aqui el nombre. Podemos hacerlo con la propiedad 'name' dentro del decorador 'CreateDateColumn'
-    type: 'timestamp'
+    type: 'timestamp',
   })
   updateAt: Date;
 
@@ -53,12 +53,15 @@ export class Product {
   brand: Brand;
 
   @ManyToMany(() => Category, (category) => category.products)
-  @JoinTable({ // @JoinTable: Este decorador se usa en relaciones muchos-a-muchos y define la tabla intermedia (de unión) que conecta las dos entidades (Product y Category). Dado que en una relación muchos-a-muchos no puedes almacenar las claves foráneas en una sola tabla, se necesita una tabla extra que almacene las asociaciones entre productos y categorías.
+  @JoinTable({
+    // @JoinTable: Este decorador se usa en relaciones muchos-a-muchos y define la tabla intermedia (de unión) que conecta las dos entidades (Product y Category). Dado que en una relación muchos-a-muchos no puedes almacenar las claves foráneas en una sola tabla, se necesita una tabla extra que almacene las asociaciones entre productos y categorías.
     name: 'products_categories', // name: 'products_categories': Especifica el nombre de la tabla de unión. En este caso, la tabla que conecta productos y categorías se llamará products_categories.
-    joinColumn: { // joinColumn: { name: 'product_id' }: Define la columna de la tabla intermedia (products_categories) que hace referencia a la entidad actual, que en este caso es Product. Aquí, product_id será la clave foránea que referencia a la tabla de productos.
+    joinColumn: {
+      // joinColumn: { name: 'product_id' }: Define la columna de la tabla intermedia (products_categories) que hace referencia a la entidad actual, que en este caso es Product. Aquí, product_id será la clave foránea que referencia a la tabla de productos.
       name: 'product_id',
     },
-    inverseJoinColumn: { // inverseJoinColumn: { name: 'category_id' }: Define la columna de la tabla intermedia que hace referencia a la entidad relacionada, que es Category. Aquí, category_id será la clave foránea que referencia a la tabla de categorías.
+    inverseJoinColumn: {
+      // inverseJoinColumn: { name: 'category_id' }: Define la columna de la tabla intermedia que hace referencia a la entidad relacionada, que es Category. Aquí, category_id será la clave foránea que referencia a la tabla de categorías.
       name: 'category_id',
     },
   })
