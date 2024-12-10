@@ -16,6 +16,7 @@ async function bootstrap() {
     }),
   );
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector))); // Con esta linea activamos que podamos usar la tecnica de serializacion en cualquier parte de nuestra aplicacion
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('API')
@@ -24,6 +25,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
