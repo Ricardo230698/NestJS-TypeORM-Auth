@@ -47,6 +47,9 @@ const API_KEY_PROD = 'PROD1212121SA';
           database: dbName,
           synchronize: true, // En producción, es mejor ponerlo en false
           autoLoadEntities: true,
+          ssl: {
+            rejectUnauthorized: false
+          }
         };
       },
     }),
@@ -84,6 +87,9 @@ const API_KEY_PROD = 'PROD1212121SA';
           user,
           password,
           database: dbName,
+          ssl: {
+            rejectUnauthorized: false
+          }
         });
         // The following is for testing purposes
         // const test = await connection.execute('SELECT * FROM brand');
