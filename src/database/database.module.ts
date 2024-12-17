@@ -34,18 +34,11 @@ const API_KEY_PROD = 'PROD1212121SA';
     //   },
     // }),
     TypeOrmModule.forRootAsync({
-      // name: 'mysqlDB',
-      inject: [config.KEY],
-      useFactory: (configService: ConfigType<typeof config>) => {
-        const { dbName, user, password, host, port } = configService.mysql;
+      useFactory: () => {
         return {
           type: 'mysql',
-          host,
-          port,
-          username: user,
-          password,
-          database: dbName,
-          synchronize: true, // En producción, es mejor ponerlo en false
+          url: process.env.DATABASE_URL, // Usamos DATABASE_URL directamente
+          synchronize: true, // Cambiar a false en producción
           autoLoadEntities: true,
         };
       },
@@ -76,18 +69,8 @@ const API_KEY_PROD = 'PROD1212121SA';
     // Si deseas tener un proveedor similar para MySQL, puedes crear uno usando el cliente MySQL de Node.js. Sin embargo, ten en cuenta que al usar TypeORM con NestJS, ya tienes la conexión gestionada por TypeORM a través de TypeOrmModule, lo cual suele ser suficiente para la mayoría de los casos. Si aún así deseas tener un proveedor específico para MySQL que te permita realizar consultas manuales o tener un control más granular sobre la conexión, aquí esta:
     {
       provide: 'MYSQL', //Este proveedor es útil si necesitas realizar consultas personalizadas o manejar la conexión MySQL fuera del contexto de TypeORM. Si solo estás utilizando TypeORM para interactuar con la base de datos, no necesitas este proveedor adicional.
-      useFactory: async (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port } = configService.mysql;
-        const connection = await mysql.createConnection({
-          host,
-          port,
-          user,
-          password,
-          database: dbName,
-        });
-        // The following is for testing purposes
-        // const test = await connection.execute('SELECT * FROM brand');
-        // console.log(test);
+      useFactory: async () => {
+        const connection = await mysql.createConnection(process.env.DATABASE_URL);
         return connection;
       },
       inject: [config.KEY],
