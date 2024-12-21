@@ -12,5 +12,3 @@ export const AppDataSource = new DataSource({
   migrations: ['src/database/migrations/*.ts'],
   migrationsTableName: 'migrations',
 });
-
-export default AppDataSource;
