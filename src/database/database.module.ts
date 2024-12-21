@@ -40,6 +40,7 @@ const API_KEY_PROD = 'PROD1212121SA';
           url: process.env.DATABASE_URL, // Usamos DATABASE_URL directamente
           synchronize: false, // Cambiar a false en producción
           autoLoadEntities: true,
+          logging: true,
         };
       },
     }),
