@@ -1,0 +1,8 @@
+runtime: nodejs18
+env: standard
+instance_class: F2
+env_variables:
+  DB_HOST: '34.58.248.75'
+  DB_USER: 'root'
+  DB_PASSWORD: 'Casanueva23'
+  DB_NAME: 'my_db'
