@@ -6,7 +6,7 @@ dotenv.config();
 export const AppDataSource = new DataSource({
   type: 'mysql',
   url: process.env.DATABASE_URL,
-  synchronize: false,
+  synchronize: true,
   logging: false,
   entities: ['src/**/*.entity.ts'],
   migrations: ['src/database/migrations/*.ts'],

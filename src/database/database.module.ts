@@ -38,7 +38,7 @@ const API_KEY_PROD = 'PROD1212121SA';
         return {
           type: 'mysql',
           url: process.env.DATABASE_URL, // Usamos DATABASE_URL directamente
-          synchronize: false, // Cambiar a false en producción
+          synchronize: true, // Cambiar a false en producción
           autoLoadEntities: true,
           logging: true,
         };
