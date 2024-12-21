@@ -4,7 +4,7 @@ instance_class: F2
 env_variables:
   DATABASE_URL: 'mysql://ricardo:ricardo23@34.58.248.75/my_db'
   DATABASE_NAME: 'my_db'
-  DATABASE_PORT: '5432'
+  DATABASE_PORT: '3306'
   API_KEY: 'ABC123'
   PORT: '3000'
   JWT_SECRET: 'cats my project'
